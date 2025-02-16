@@ -3,6 +3,8 @@ import SwiftUI
 struct DashboardView: View {
     @State private var showLogoutAlert = false
     @State private var isLoggedOut = false // State to manage navigation
+    @AppStorage("rewardPoints") private var rewardPoints: Int = 0
+  
 
     let features = [
         FeatureItem(title: "Text Navigation", icon: "map", description: "Find your way around campus", color: .green, notifications: 3),
@@ -75,7 +77,7 @@ struct DashboardView: View {
                     ScrollView {
                         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                             ForEach(features) { feature in
-                                NavigationLink(destination: FeatureDetailView(feature: feature)) {
+                                NavigationLink(destination: destinationView(for: feature.title)) {
                                     FeatureTile(feature: feature)
                                     
                                 }
@@ -85,11 +87,13 @@ struct DashboardView: View {
                         .padding(.top, 10)
                     }
                     
+                    // Reward Points Section
+                    
                     HStack {
                         Image(systemName: "bitcoinsign.circle.fill")
                             .foregroundColor(.yellow)
                             .font(.largeTitle)
-                        Text("Your Redeems: 120 Points")
+                        Text("Your Rewards: \(rewardPoints) Points")
                             .font(.title3)
                             .foregroundColor(.white)
                     }
@@ -176,6 +180,15 @@ struct FeatureTile: View {
         .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
     }
 }
+
+@ViewBuilder
+
+private func destinationView(for title: String) -> some View {        switch title {
+       case "Resource Status":
+           ResourceStatusView()        case "Campus Events":
+           EventsView()        case "Meet Lecturers":            RequestMeetingView()        case "Announcements":            SpecialAnnouncementsView()        case "Feedback":            ComplaintsView()        default:
+           EmptyView()        }
+   }
 
 // Dummy detail view for navigation
 struct FeatureDetailView: View {

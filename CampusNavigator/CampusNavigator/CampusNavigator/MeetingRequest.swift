@@ -66,6 +66,7 @@ struct RequestMeetingView: View {
                 AddMeetingView(requests: $requests, showSelf: $showAddScreen, lecturers: lecturers)
             }
         }
+        .navigationBarHidden(true)
     }
 }
 
@@ -118,6 +119,7 @@ struct RequestRow: View {
             }
             .padding(8)
         }
+        
     }
     
     func getDateString(date: Date) -> String {

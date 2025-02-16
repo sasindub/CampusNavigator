@@ -87,6 +87,7 @@ struct ResourceStatusView: View {
             }
             .navigationBarHidden(true)
         }
+        .navigationBarHidden(true)
     }
     
     private func getIndex(for id: UUID) -> Int {

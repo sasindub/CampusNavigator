@@ -97,18 +97,18 @@ struct AnnouncementRow: View {
             .background(Color.white)
             .cornerRadius(12)
             .shadow(radius: 2)
-            .padding(10)
+            .padding(2)
             .background(
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 12)
                                   .fill(importanceColor)
                           )
-           .padding(.horizontal, -4)
+           .padding(.horizontal, -1 )
             
             Text(dateString(from: announcement.date))
                 .font(.caption)
                 .foregroundColor(.white)
                 .padding(6)
-                .background(Color.green)
+                .background(importanceColor)
                 .cornerRadius(4)
                 .padding(8)
         }

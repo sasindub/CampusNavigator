@@ -58,6 +58,7 @@ struct EventsView: View {
                 AddEventView(events: $events, showSelf: $showAddScreen)
             }
         }
+        .navigationBarHidden(true)
     }
 }
 
@@ -92,6 +93,7 @@ struct EventRow: View {
                 .cornerRadius(4)
                 .padding(8)
         }
+        
     }
     
     func getDateString(date: Date) -> String {
