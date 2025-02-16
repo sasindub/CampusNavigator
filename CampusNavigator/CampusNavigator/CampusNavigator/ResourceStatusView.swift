@@ -1,48 +1,46 @@
 import SwiftUI
 
+enum ResourceStatus: String, CaseIterable {
+    case available = "Available"
+    case crowded = "Crowded"
+    case moderate = "Moderate Crowded"
+    case closed = "Closed"
+}
+
 struct ResourceStatusView: View {
     @State private var searchText = ""
-    @State private var showLogoutAlert = false
-    @State private var isLoggedOut = false // State to manage navigation
-
-    let resources = [
-        ResourceItem(title: "Library", icon: "book.fill", description: "Open: 8 AM - 10 PM", notifications: 2),
-        ResourceItem(title: "Cafeteria", icon: "fork.knife", description: "Open: 7 AM - 8 PM", notifications: 1),
-        ResourceItem(title: "Study Room", icon: "person.3.fill", description: "Available", notifications: 0),
-        ResourceItem(title: "Computer Lab", icon: "desktopcomputer", description: "Open: 9 AM - 5 PM", notifications: 3)
+    @AppStorage("rewardPoints") private var rewardPoints = 0
+    @State private var resources = [
+        ResourceItem(title: "Library", icon: "book.fill", status: .available),
+        ResourceItem(title: "Cafeteria", icon: "fork.knife", status: .available),
+        ResourceItem(title: "Study Room", icon: "person.3.fill", status: .available),
+        ResourceItem(title: "Computer Lab", icon: "desktopcomputer", status: .available)
     ]
     
     var filteredResources: [ResourceItem] {
-        if searchText.isEmpty {
-            return resources
-        } else {
-            return resources.filter { $0.title.localizedCaseInsensitiveContains(searchText) }
-        }
+        searchText.isEmpty ? resources : resources.filter { $0.title.localizedCaseInsensitiveContains(searchText) }
     }
 
     var body: some View {
         NavigationView {
             VStack {
-                // Header with Back Button
+                // Header
                 HStack {
-                    Button(action: {
-                        // Action for back button
-                    }) {
+                    Button(action: {}) {
                         Image(systemName: "chevron.left")
                             .font(.title)
-                            .foregroundColor(.green)
+                            .foregroundColor(.white)
                     }
                     .padding()
-
+                    
                     Text("Resource Status")
                         .font(.title2)
                         .fontWeight(.semibold)
-                        .foregroundColor(.primary)
-
+                        .foregroundColor(.white)
+                    
                     Spacer()
                 }
-                .padding(.vertical)
-                .background(Color.green.opacity(0.2))
+                .background(Color.green)
                 .shadow(radius: 2)
 
                 // Search Bar
@@ -52,37 +50,50 @@ struct ResourceStatusView: View {
                     .cornerRadius(8)
                     .padding(.horizontal)
 
-                // Grid Layout
+                // Resources List
                 ScrollView {
-                    LazyVGrid(columns: [GridItem(.fixed(150)), GridItem(.fixed(150))], spacing: 16) {
+                    VStack(spacing: 12) {
                         ForEach(filteredResources) { resource in
-                            NavigationLink(destination: ResourceDetailView(resource: resource)) {
-                                ResourceTile(resource: resource)
-                                    .frame(width: 150, height: 150) // Fixed width and height
+                            NavigationLink(
+                                destination: ResourceDetailView(
+                                    resource: $resources[getIndex(for: resource.id)],
+                                    rewardPoints: $rewardPoints
+                                )
+                            ) {
+                                ResourceRow(resource: resource)
+                                    .padding(.horizontal)
                             }
+                            .buttonStyle(PlainButtonStyle())
                         }
                     }
-                    .padding(.horizontal)
-                    .padding(.top, 10)
+                    .padding(.vertical, 10)
                 }
+                
+                // Reward Points Section
+                
+                HStack {
+                    Image(systemName: "bitcoinsign.circle.fill")
+                        .foregroundColor(.yellow)
+                        .font(.largeTitle)
+                    Text("Your Rewards: \(rewardPoints) Points")
+                        .font(.title3)
+                        .foregroundColor(.white)
+                }
+                .padding()
+                .background(Color.black.opacity(0.6))
+                .cornerRadius(12)
+                .shadow(radius: 5)
+                .padding(.horizontal)
             }
             .navigationBarHidden(true)
-            .alert(isPresented: $showLogoutAlert) {
-                Alert(
-                    title: Text("Logout"),
-                    message: Text("Are you sure you want to logout?"),
-                    primaryButton: .destructive(Text("Yes")) {
-                        isLoggedOut = true // Set the state to indicate logout
-                    },
-                    secondaryButton: .cancel()
-                )
-            }
-            .background(
-                NavigationLink(destination: LoginView().navigationBarBackButtonHidden(true), isActive: $isLoggedOut) {
-                    EmptyView()
-                }
-            )
         }
+    }
+    
+    private func getIndex(for id: UUID) -> Int {
+        guard let index = resources.firstIndex(where: { $0.id == id }) else {
+            fatalError("Resource not found")
+        }
+        return index
     }
 }
 
@@ -90,71 +101,91 @@ struct ResourceItem: Identifiable {
     let id = UUID()
     let title: String
     let icon: String
-    let description: String
-    let notifications: Int
+    var status: ResourceStatus
 }
 
-struct ResourceTile: View {
+struct ResourceRow: View {
     let resource: ResourceItem
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Image(systemName: resource.icon)
-                    .font(.title2)
-                    .foregroundColor(.green)
-                Spacer()
+        HStack(spacing: 16) {
+            Image(systemName: resource.icon)
+                .font(.title2)
+                .foregroundColor(.green)
+                .frame(width: 40)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(resource.title)
+                    .font(.headline)
+                    .foregroundColor(.primary)
                 
-                // Notification Label
-                if resource.notifications > 0 {
-                    HStack {
-                        Image(systemName: "bell.fill")
-                            .foregroundColor(.white)
-                        Text("\(resource.notifications)")
-                    }
-                    .background(Color.red)
-                    .font(.caption)
-                    .foregroundColor(.white)
-                    .padding(4)
-                    .cornerRadius(8)
-                }
+                Text(resource.status.rawValue)
+                    .font(.subheadline)
+                    .foregroundColor(statusColor(for: resource.status))
             }
             
-            Text(resource.title)
-                .font(.headline)
-                .foregroundColor(.primary)
+            Spacer()
             
-            Text(resource.description)
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-                .lineLimit(2)
+            Image(systemName: "chevron.right")
+                .foregroundColor(.gray)
         }
         .padding()
         .background(Color.white)
         .cornerRadius(12)
-        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+        .shadow(color: Color.black.opacity(0.1), radius: 3, x: 0, y: 2)
+    }
+    
+    private func statusColor(for status: ResourceStatus) -> Color {
+        switch status {
+        case .available: return .green
+        case .crowded: return .orange
+        case .moderate: return .yellow
+        case .closed: return .red
+        }
     }
 }
 
-// Dummy detail view for navigation
 struct ResourceDetailView: View {
-    let resource: ResourceItem
+    @Binding var resource: ResourceItem
+    @Binding var rewardPoints: Int
+    @State private var previousStatus: ResourceStatus?
     
     var body: some View {
-        VStack {
+        VStack(spacing: 20) {
             Text(resource.title)
                 .font(.largeTitle)
-                .padding()
-            Text(resource.description)
-                .font(.body)
-                .padding()
+                .padding(.top)
+            
+            VStack(spacing: 15) {
+                ForEach(ResourceStatus.allCases, id: \.self) { status in
+                    HStack {
+                        Image(systemName: resource.status == status ? "largecircle.fill.circle" : "circle")
+                            .foregroundColor(resource.status == status ? .green : .gray)
+                        Text(status.rawValue)
+                            .foregroundColor(.primary)
+                        Spacer()
+                    }
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(8)
+                    .onTapGesture {
+                        if resource.status != status {
+                            rewardPoints += 1
+                        }
+                        resource.status = status
+                    }
+                }
+            }
+            .padding(.horizontal)
+            
             Spacer()
         }
         .navigationTitle(resource.title)
+        .onAppear {
+            previousStatus = resource.status
+        }
     }
 }
-
-
 
 struct ResourceStatusView_Previews: PreviewProvider {
     static var previews: some View {
