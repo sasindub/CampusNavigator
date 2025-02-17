@@ -9,6 +9,7 @@ struct ComplaintSuggestion: Identifiable {
 }
 
 struct ComplaintsView: View {
+    @Environment(\.presentationMode) private var presentationMode
     @State var entries: [ComplaintSuggestion] = []
     @State var showAddScreen = false
     @State var searchText = ""
@@ -26,7 +27,9 @@ struct ComplaintsView: View {
             VStack {
                 // Header
                 HStack {
-                    Button(action: {}) {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss() // Add this action
+                    }) {
                         Image(systemName: "chevron.left").font(.title).foregroundColor(.white)
                     }.padding()
                     

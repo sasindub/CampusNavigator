@@ -17,6 +17,7 @@ struct MeetingRequest: Identifiable {
 }
 
 struct RequestMeetingView: View {
+    @Environment(\.presentationMode) private var presentationMode
     @State var requests: [MeetingRequest] = []
     @State var showAddScreen = false
     @State var searchText = ""
@@ -28,7 +29,9 @@ struct RequestMeetingView: View {
             VStack {
                 // Header
                 HStack {
-                    Button(action: {}) {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss() // Add this action
+                    }) {
                         Image(systemName: "chevron.left").font(.title).foregroundColor(.white)
                     }.padding()
                     

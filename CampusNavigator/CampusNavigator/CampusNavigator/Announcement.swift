@@ -15,6 +15,7 @@ struct Announcement: Identifiable {
 }
 
 struct SpecialAnnouncementsView: View {
+    @Environment(\.presentationMode) private var presentationMode
     @State var announcements: [Announcement] = []
     @State var showAddScreen = false
     @State var searchText = ""
@@ -24,7 +25,9 @@ struct SpecialAnnouncementsView: View {
             VStack {
                 // Header
                 HStack {
-                    Button(action: {}) {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss() // Add this action
+                    }) {
                         Image(systemName: "chevron.left").font(.title).foregroundColor(.white)
                     }.padding()
                     
@@ -63,6 +66,7 @@ struct SpecialAnnouncementsView: View {
                 AddAnnouncementView(announcements: $announcements, showSelf: $showAddScreen)
             }
         }
+        .navigationBarHidden(true)
     }
 }
 

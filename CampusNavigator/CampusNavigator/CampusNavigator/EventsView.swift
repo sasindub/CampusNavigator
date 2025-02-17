@@ -7,9 +7,11 @@ struct EventItem: Identifiable {
     var description: String
     var icon: String
     var date: Date
+    var venue: String
 }
 
 struct EventsView: View {
+    @Environment(\.presentationMode) private var presentationMode
     @State var events: [EventItem] = []
     @State var showAddScreen = false
     @State var searchText = ""
@@ -19,7 +21,9 @@ struct EventsView: View {
             VStack {
                 // Header
                 HStack {
-                    Button(action: {}) {
+                    Button( action: {
+                        presentationMode.wrappedValue.dismiss() // Add this action
+                    }) {
                         Image(systemName: "chevron.left").font(.title).foregroundColor(.white)
                     }.padding()
                     
@@ -70,30 +74,71 @@ struct EventRow: View {
         ZStack(alignment: .topTrailing) {
             VStack(alignment: .leading) {
                 HStack {
-                    Image(systemName: event.icon).foregroundColor(.green).font(.title2)
-                    Text(event.title).font(.headline)
+                    Image(systemName: event.icon)
+                        .foregroundColor(.green)
+                        .font(.title2)
+                    Text(event.title)
+                        .font(.headline)
                     Spacer()
                 }
-                Text(event.description).font(.subheadline).foregroundColor(.gray)
-                if event.link != "" {
-                    Link("More Details", destination: URL(string: event.link)!)
-                        .font(.caption).foregroundColor(.blue)
+                
+                Text(event.description)
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                    .padding(.bottom, 4)
+                
+                HStack{
+                    if event.link != "" {
+                        Link("More Details", destination: URL(string: event.link)!)
+                            .font(.caption)
+                            .foregroundColor(.blue)
+                    }
+                    Spacer()
+                    Text("Attend")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                        .padding(.bottom, 4)
+                    
                 }
+                
+                
             }
             .padding()
             .background(Color.white)
             .cornerRadius(12)
             .shadow(radius: 2)
             
-            Text(getDateString(date: event.date))
+            VStack(alignment: .trailing, spacing: 8) {
+                // Date
+                HStack(spacing: 4) {
+                    Image(systemName: "calendar")
+                    Text(getDateString(date: event.date))
+                }
                 .font(.caption)
                 .foregroundColor(.white)
-                .padding(6)
-                .background(Color.green)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(Color.green.opacity(0.9))
                 .cornerRadius(4)
-                .padding(8)
+                .padding([.top, .trailing], 8)
+                
+                
+                // Venue
+                HStack(spacing: 4) {
+                    Image(systemName: "mappin.and.ellipse")
+                        .symbolRenderingMode(.hierarchical)
+                    Text(event.venue)
+                }
+                .font(.caption)
+                .foregroundColor(.white)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]),
+                                        startPoint: .leading, endPoint: .trailing))
+                .cornerRadius(4)
+                .padding([.bottom, .trailing], 8)
+            }
         }
-        
     }
     
     func getDateString(date: Date) -> String {
@@ -111,6 +156,7 @@ struct AddEventView: View {
     @State var desc = ""
     @State var pickedIcon = "calendar"
     @State var date = Date()
+    @State var venue = ""
     
     let icons = ["calendar", "person.fill", "book.fill", "gamecontroller.fill", "graduationcap.fill", "music.note"]
     
@@ -144,6 +190,7 @@ struct AddEventView: View {
                     }
                     
                     DatePicker("Date", selection: $date, displayedComponents: .date)
+                    TextField("Venue", text: $venue)
                     
                     HStack {
                         TextField("URL", text: $link)
@@ -178,7 +225,8 @@ struct AddEventView: View {
                         link: link,
                         description: desc,
                         icon: pickedIcon,
-                        date: date
+                        date: date,
+                        venue:venue
                     ))
                     showSelf = false
                 }

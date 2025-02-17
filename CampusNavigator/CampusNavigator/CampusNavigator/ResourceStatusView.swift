@@ -8,13 +8,14 @@ enum ResourceStatus: String, CaseIterable {
 }
 
 struct ResourceStatusView: View {
+    @Environment(\.presentationMode) private var presentationMode
     @State private var searchText = ""
     @AppStorage("rewardPoints") private var rewardPoints = 0
     @State private var resources = [
-        ResourceItem(title: "Library", icon: "book.fill", status: .available),
-        ResourceItem(title: "Cafeteria", icon: "fork.knife", status: .available),
-        ResourceItem(title: "Study Room", icon: "person.3.fill", status: .available),
-        ResourceItem(title: "Computer Lab", icon: "desktopcomputer", status: .available)
+        ResourceItem(title: "Library", icon: "book.fill", status: .available, accuracy: "78"),
+        ResourceItem(title: "Cafeteria", icon: "fork.knife", status: .available, accuracy: "56"),
+        ResourceItem(title: "Study Room", icon: "person.3.fill", status: .available, accuracy: "90"),
+        ResourceItem(title: "Computer Lab", icon: "desktopcomputer", status: .available, accuracy: "100")
     ]
     
     var filteredResources: [ResourceItem] {
@@ -26,7 +27,9 @@ struct ResourceStatusView: View {
             VStack {
                 // Header
                 HStack {
-                    Button(action: {}) {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss() 
+                    }) {
                         Image(systemName: "chevron.left")
                             .font(.title)
                             .foregroundColor(.white)
@@ -103,6 +106,7 @@ struct ResourceItem: Identifiable {
     let title: String
     let icon: String
     var status: ResourceStatus
+    let accuracy: String
 }
 
 struct ResourceRow: View {
@@ -125,8 +129,17 @@ struct ResourceRow: View {
                     .foregroundColor(statusColor(for: resource.status))
             }
             
-            Spacer()
+           
+                
             
+            Spacer()
+            Text("Accuracy \(resource.accuracy)%")
+                .font(.footnote)
+                .foregroundColor(.white)
+                .padding(2)
+                .background(Color.red.opacity(0.7))
+                .cornerRadius(4)
+                
             Image(systemName: "chevron.right")
                 .foregroundColor(.gray)
         }
@@ -150,6 +163,8 @@ struct ResourceDetailView: View {
     @Binding var resource: ResourceItem
     @Binding var rewardPoints: Int
     @State private var previousStatus: ResourceStatus?
+    @State private var isConfirmed = false
+    @State private var isSpaceRequested = false
     
     var body: some View {
         VStack(spacing: 20) {
@@ -179,12 +194,34 @@ struct ResourceDetailView: View {
             }
             .padding(.horizontal)
             
+            VStack(spacing: 15) {
+                // Confirm Button
+                Button(action: { isConfirmed = true
+                    rewardPoints += 1}) {
+                    Text(isConfirmed ? "Confirmed" : "Confirm")
+                        .frame(maxWidth: 350, minHeight: 40)
+                }
+                .disabled(isConfirmed)
+                .foregroundColor(.white)
+                .background(isConfirmed ? Color.gray : .green)
+                .cornerRadius(8)
+                
+                // Need a Space Button
+                Button(action: { isSpaceRequested = true }) {
+                    Text(isSpaceRequested ? "Space requested" : "Need a Space")
+                        .frame(maxWidth: 350, minHeight: 40)
+                }
+                .disabled(isSpaceRequested)
+                .foregroundColor(.white)
+                .background(isSpaceRequested ? Color.gray : Color(white: 0.3))
+                .cornerRadius(8)
+            }
+            .padding(.horizontal)
+            
             Spacer()
         }
         .navigationTitle(resource.title)
-        .onAppear {
-            previousStatus = resource.status
-        }
+        .onAppear { previousStatus = resource.status }
     }
 }
 

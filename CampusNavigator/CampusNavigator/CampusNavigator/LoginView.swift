@@ -26,7 +26,7 @@ struct LoginView: View {
                         .foregroundColor(.green)
                     
                     VStack(spacing: 16) {
-                        TextField("Email", text: $email)
+                        TextField("University Email", text: $email)
                             .padding()
                             .background(Color(.systemGray6))
                             .cornerRadius(10)
