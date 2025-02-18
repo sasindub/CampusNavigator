@@ -94,7 +94,7 @@ struct EventRow: View {
                             .foregroundColor(.blue)
                     }
                     Spacer()
-                    Text("Attend")
+                    Text("")
                         .font(.subheadline)
                         .foregroundColor(.gray)
                         .padding(.bottom, 4)
