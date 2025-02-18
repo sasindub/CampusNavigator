@@ -61,6 +61,11 @@ struct LoginView: View {
                                 .foregroundColor(.red)
                                 .font(.caption)
                         }
+                        
+                        Text("If you forgot the credentials please contact admin (admin@navigatorapp.com).")
+                            .foregroundColor(.blue)
+                            .font(.caption)
+                        
                     }
                     .padding()
                     .background(RoundedRectangle(cornerRadius: 15).stroke(Color.gray.opacity(0.3), lineWidth: 2))

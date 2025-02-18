@@ -57,14 +57,14 @@ struct DashboardView: View {
                             .background(Color.green)
                             .cornerRadius(8)
                         }
-                        .padding(.trailing) // Add some space to the right of the button
+                        .padding(.trailing) 
                         
                         Spacer()
                         
                         Image(systemName: "person.fill")
                             .font(.title2)
                             .foregroundColor(.green)
-                        Text("Welcome, User!")
+                        Text("Welcome, Joe Doi!")
                             .font(.headline)
                             .foregroundColor(.primary)
                     }

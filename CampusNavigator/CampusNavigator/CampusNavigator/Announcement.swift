@@ -94,7 +94,6 @@ struct AnnouncementRow: View {
                 Text(announcement.details)
                     .font(.subheadline)
                     .foregroundColor(.gray)
-                    .lineLimit(2)
                     .truncationMode(.tail)
             }
             .padding()

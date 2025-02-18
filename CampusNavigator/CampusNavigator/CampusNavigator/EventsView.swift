@@ -69,6 +69,7 @@ struct EventsView: View {
 struct EventRow: View {
     var event: EventItem
     @State var dateString = ""
+    @State var isAttend = false
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -94,10 +95,18 @@ struct EventRow: View {
                             .foregroundColor(.blue)
                     }
                     Spacer()
-                    Text("Attend")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                        .padding(.bottom, 4)
+                    Spacer()
+                    Button(action: { isAttend = true }) {
+                                           Text(isAttend ? "Added to Calendar" : "Attend")
+                                            .font(.system(size: 12, weight: .semibold))
+                                            .padding(.horizontal, 12)
+                                            .padding(.vertical, 6)
+                                    }
+                                    .disabled(isAttend)
+                                    .foregroundColor(.white)
+                                    .background(isAttend ? Color.gray : Color(red: 0.2, green: 0.2, blue: 0.2, opacity: 1.0))
+                                    .cornerRadius(12)
+                                    
                     
                 }
                 
