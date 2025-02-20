@@ -1,79 +1,114 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State private var email = ""
-    @State private var password = ""
-    @State private var isAuthenticated = false
-    @State private var showError = false
-
+    @State var email: String = ""
+    @State var pass: String = ""
+    @State var loggedIn = false
+    @State var showErr = false
+    @State var loading = false
+    @State var fieldFocus: Int? = 0
+    
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.white.edgesIgnoringSafeArea(.all)
+                // Green gradient background
+                LinearGradient(gradient: Gradient(colors: [
+                    Color.green.opacity(0.3),
+                    Color.green.opacity(0.1),
+                    Color.white
+                ]), startPoint: .top, endPoint: .bottom)
+                .edgesIgnoringSafeArea(.all)
                 
-                VStack(spacing: 20) {
-                    Spacer()
+                VStack {
+                    // Logo
+                    VStack {
+                        Image(systemName: "map.circle.fill")
+                            .resizable()
+                            .frame(width: 80, height: 80)
+                            .foregroundColor(.green)
+                            .background(Circle().fill(Color(.systemGray6)).frame(width: 120, height: 120))
+                            .padding(.bottom, 10)
+                        
+                        Text("Campus Navigator")
+                            .font(.title)
+                            .bold()
+                            .foregroundColor(.green)
+                    }
+                    .padding(.top, 60)
+                    .padding(.bottom, 40)
                     
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .frame(width: 80, height: 80)
-                        .foregroundColor(.green)
-                        .padding(.bottom, 10)
-
-                    Text("Campus Navigator")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundColor(.green)
-                    
-                    VStack(spacing: 16) {
-                        TextField("University Email", text: $email)
-                            .padding()
-                            .background(Color(.systemGray6))
-                            .cornerRadius(10)
-                            .autocapitalization(.none)
-                            .keyboardType(.emailAddress)
-
-                        SecureField("Password", text: $password)
-                            .padding()
-                            .background(Color(.systemGray6))
-                            .cornerRadius(10)
-
-                        NavigationLink(destination: DashboardView().navigationBarBackButtonHidden(true), isActive: $isAuthenticated) {
-                            EmptyView()
+                    // Fields
+                    VStack(spacing: 15) {
+                        HStack {
+                            Image(systemName: "envelope").foregroundColor(.green)
+                            TextField("Email", text: $email)
+                                .keyboardType(.emailAddress)
+                                .textContentType(.emailAddress)
                         }
-
-                        Button("Login") {
-                            if email == "u" && password == "1" {
-                                isAuthenticated = true
+                        .padding(12)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(10)
+                        
+                        HStack {
+                            Image(systemName: "lock").foregroundColor(.green)
+                            SecureField("Password", text: $pass)
+                        }
+                        .padding(12)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(10)
+                    }
+                    .padding(.horizontal, 20)
+                    
+                    // Login Button (now matching text field width)
+                    Button(action: {
+                        loading = true
+                        showErr = false
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            loading = false
+                            if email == "u" && pass == "1" {
+                                loggedIn = true
                             } else {
-                                showError = true
+                                showErr = true
                             }
                         }
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.green)
-                        .cornerRadius(10)
-
-                        if showError {
-                            Text("Invalid credentials. Try again.")
-                                .foregroundColor(.red)
-                                .font(.caption)
+                    }) {
+                        if loading {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50)
+                        } else {
+                            Text("Login")
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50)
                         }
-                        
-                        Text("If you forgot the credentials please contact admin (admin@navigatorapp.com).")
-                            .foregroundColor(.blue)
-                            .font(.caption)
-                        
                     }
-                    .padding()
-                    .background(RoundedRectangle(cornerRadius: 15).stroke(Color.gray.opacity(0.3), lineWidth: 2))
-                    .padding(.horizontal, 10)
-
+                    .background(Color.green)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    .padding(.horizontal, 20) // Match text field padding
+                    .padding(.top, 20)
+                    
+                    if showErr {
+                        Text("Incorrect email or password")
+                            .foregroundColor(.red)
+                            .padding(.top, 10)
+                    }
+                    
                     Spacer()
+                    
+                    Button("Forgot password? Contact admin") {
+                        // TODO: Implement contact
+                    }
+                    .foregroundColor(.gray)
+                    .font(.caption)
+                    .padding(.bottom, 20)
                 }
-                .padding()
+            }
+            .navigationDestination(isPresented: $loggedIn) {
+                DashboardView()
+                    .navigationBarBackButtonHidden(true)
             }
         }
     }
