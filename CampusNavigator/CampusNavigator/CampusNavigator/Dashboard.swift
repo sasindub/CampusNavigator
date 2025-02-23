@@ -1,9 +1,5 @@
 import SwiftUI
 
-extension Color {
-    static let customDarkGreen = Color(red: 0/255, green: 55/255, blue: 6/255)
-}
-
 struct DashboardView: View {
     var body: some View {
         NavigationStack {
@@ -54,7 +50,7 @@ struct DashboardView: View {
                     .padding(.bottom, 20)
                     .padding(.horizontal)
                 }
-                .frame(height: 65)
+                .frame(height: 70)
                 
                 Spacer()
                 Spacer()
@@ -133,131 +129,7 @@ struct DashboardView: View {
 }
 
 // MARK: - Supporting Views
-struct SectionHeader: View {
-    let title: String
-    let action: String
-    let destination: AnyView?
-    
-    init<V: View>(title: String, action: String, destination: V? = nil) {
-        self.title = title
-        self.action = action
-        self.destination = destination != nil ? AnyView(destination) : nil
-    }
-    
-    var body: some View {
-        HStack {
-            Text(title)
-                .font(.headline.weight(.semibold))
-            
-            Spacer()
-            
-            if !action.isEmpty, let destination = destination {
-                NavigationLink(destination: destination) {
-                    Text(action)
-                        .font(.subheadline.weight(.medium))
-                        .foregroundColor(.blue)
-                }
-            } else if !action.isEmpty {
-                Text(action)
-                    .font(.subheadline.weight(.medium))
-                    .foregroundColor(.blue)
-            }
-        }
-    }
-}
 
-struct FeatureTile: View {
-    let title: String
-    let subtitle: String
-    let icon: String
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Image(systemName: icon)
-                .font(.largeTitle.weight(.semibold))
-                .symbolRenderingMode(.multicolor)
-                .foregroundColor(title == "Navigator" ? .white : .customDarkGreen)
-            
-            Text(title)
-                .font(.headline.weight(.semibold))
-                .foregroundColor(title == "Navigator" ? .white : .customDarkGreen)
-            
-            Text(subtitle)
-                .font(.subheadline)
-                .foregroundColor(title == "Navigator" ? .white.opacity(0.8) : .customDarkGreen)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(title == "Navigator" ? Color.customDarkGreen : Color.green.opacity(0.1))
-        )
-        .shadow(color: .black.opacity(0.05 ), radius: 8, x: 0, y: 4)
-    }
-}
-
-struct EventTile: View {
-    let date: String
-    let title: String
-    let time: String
-    
-    var body: some View {
-        HStack(spacing: 16) {
-            VStack {
-                Text(date)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundColor(Color.customDarkGreen)
-            }
-            .padding(10)
-            .frame(width: 60)
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .strokeBorder(Color.customDarkGreen, lineWidth: 1)
-            )
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .font(.subheadline.weight(.medium))
-                    .foregroundColor(Color.customDarkGreen)
-                
-                Text(time)
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
-            }
-            
-            Spacer()
-            
-            Image(systemName: "chevron.right")
-                .foregroundColor(.secondary)
-        }
-    }
-}
-
-struct QuickLink: View {
-    let icon: String
-    let label: String
-    
-    var body: some View {
-        VStack(spacing: 8) {
-            Image(systemName: icon)
-                .foregroundColor(Color.customDarkGreen)
-            
-            Text(label)
-                .font(.caption)
-                .foregroundColor(.customDarkGreen)
-                .multilineTextAlignment(.center)
-                .fontWeight(.medium)
-        }
-        .frame(width: 105, height: 61)
-        .font(.title3.weight(.semibold))
-        .symbolRenderingMode(.monochrome)
-        .foregroundColor(.green)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.green.opacity(0.1))
-        )
-    }
-}
 
 struct AnnouncementTile: View {
     let icon: String
