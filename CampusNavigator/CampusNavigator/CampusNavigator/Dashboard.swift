@@ -6,131 +6,143 @@ extension Color {
 
 struct DashboardView: View {
     var body: some View {
-        VStack(spacing: 0) {
-            // Header Area: separated from the scrollable content
-            ZStack {
-                Color.customDarkGreen
-                    .ignoresSafeArea(edges: .top)
-                HStack {
-                    Image("profile")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 40, height: 40)
-                        .clipShape(Circle())
-                        .overlay(Circle().stroke(Color(.systemBackground), lineWidth: 1))
-                    
-                    VStack(alignment: .leading) {
-                        Text("Welcome back,")
-                            .font(.subheadline)
-                            .foregroundColor(.white)
-                        Text("Jone Doe")
-                            .font(.title3.weight(.semibold))
-                            .foregroundColor(.white)
-                    }
-                    
-                    Spacer()
-                    
-                    HStack(spacing: 8) {
-                        Image(systemName: "star.fill")
-                            .symbolRenderingMode(.palette)
-                            .foregroundStyle(.white, .green)
-                        
-                        Text("78")
-                            .fontWeight(.medium)
-                    }
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(.green.opacity(0.9))
-                    .clipShape(Capsule())
-                    
-                    Button {
-                        // Notification action
-                    } label: {
-                        Image(systemName: "bell.badge.fill")
-                            .symbolRenderingMode(.palette)
-                            .foregroundStyle(.red, .white)
-                            .font(.system(size: 20))
-                    }
-                }
-                .padding(.bottom, 20)
-                .padding(.horizontal)
-            }
-            .frame(height: 80) // Fixed header height
-            Spacer()
-            Spacer()
-            // Main Content
-            ScrollView {
-                VStack(spacing: 20) {
-                    
-                    // Feature Tiles
-                    LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible())], spacing: 16) {
-                        FeatureTile(title: "Navigator", subtitle: "Find your way", icon: "map.fill")
-                        FeatureTile(title: "Resources", subtitle: "Check availability", icon: "rectangle.portrait.and.arrow.right")
-                    }
-                    .padding(.horizontal)
-                    
-                    // Upcoming Events
-                    SectionHeader(title: "Upcoming Events", action: "See all")
-                        .padding(.horizontal)
-                    
-                    VStack(spacing: 16) {
-                        EventTile(date: "24 MAR", title: "Tech Innovation Summit", time: "10:00 AM • Main Auditorium")
-                            .padding(.top)
-                            .padding(.horizontal)
-                        EventTile(date: "24 MAR", title: "Tech Innovation Summit", time: "10:00 AM • Main Auditorium")
-                            .padding(.horizontal)
-                            .padding(.bottom)
-                    }
-                    .background(Color.white)
-                    .cornerRadius(12)
-                    .padding(.horizontal)
-                    
-                    // Quick Links
-                    SectionHeader(title: "Quick Links", action: "")
-                        .padding(.horizontal)
-                    
-                    HStack(spacing: 24) {
-                        QuickLink(icon: "plus.circle.fill", label: "Post Event")
-                        QuickLink(icon: "person.2.fill", label: "Meet Lecturer")
-                        QuickLink(icon: "lightbulb.fill", label: "Suggestions")
-                    }
-                    .padding(.horizontal)
-                    
-                    // Announcements
-                    SectionHeader(title: "Announcements", action: "View all")
-                        .padding(.horizontal)
-                    
-                    VStack(spacing: 16) {
-                        AnnouncementTile(icon: "megaphone.fill", title: "Library Hours Extended", time: "2 hours ago")
-                    }
-                    .padding(.horizontal)
-                    .padding(.bottom)
-                }
-            }
-            
-            // Bottom Navigation Bar
+        NavigationStack {
             VStack(spacing: 0) {
-                Divider()
-                HStack {
-                    BottomNavItem(icon: "house.fill", label: "Home", isActive: true)
-                    BottomNavItem(icon: "magnifyingglass", label: "Search")
-                    BottomNavItem(icon: "calendar", label: "Events")
-                    BottomNavItem(icon: "person.fill", label: "Profile")
+                ZStack {
+                    Color.customDarkGreen
+                        .ignoresSafeArea(edges: .top)
+                    HStack {
+                        Image("person.crop.circle")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 40, height: 40)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color(.systemBackground), lineWidth: 1))
+                        
+                        VStack(alignment: .leading) {
+                            Text("Welcome back,")
+                                .font(.subheadline)
+                                .foregroundColor(.white)
+                            Text("Jone Doe")
+                                .font(.title3.weight(.semibold))
+                                .foregroundColor(.white)
+                        }
+                        
+                        Spacer()
+                        
+                        HStack(spacing: 8) {
+                            Image(systemName: "star.fill")
+                                .symbolRenderingMode(.palette)
+                                .foregroundStyle(.white, .green)
+                            
+                            Text("78")
+                                .fontWeight(.medium)
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(.green.opacity(0.9))
+                        .clipShape(Capsule())
+                        
+                        Button {
+                        } label: {
+                            Image(systemName: "bell.badge.fill")
+                                .symbolRenderingMode(.palette)
+                                .foregroundStyle(.red, .white)
+                                .font(.system(size: 20))
+                        }
+                    }
+                    .padding(.bottom, 20)
+                    .padding(.horizontal)
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.top, 8)
-                .background(.regularMaterial)
+                .frame(height: 65)
+                
+                Spacer()
+                Spacer()
+                
+                ScrollView {
+                    VStack(spacing: 20) {
+                        LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible())], spacing: 16) {
+                            NavigationLink(destination: NavigatorView()) {
+                                FeatureTile(title: "Navigator", subtitle: "Find your way", icon: "map.fill")
+                            }
+                            NavigationLink(destination: ResourceStatusView()) {
+                                FeatureTile(title: "Resources", subtitle: "Check availability", icon: "rectangle.portrait.and.arrow.right")
+                            }
+                        }
+                        .padding(.horizontal)
+                        
+                        SectionHeader(title: "Upcoming Events", action: "See all", destination: EventsView())
+                            .padding(.horizontal)
+                        
+                        VStack(spacing: 16) {
+                            EventTile(date: "24 MAR", title: "Tech Innovation Summit", time: "10:00 AM • Main Auditorium")
+                                .padding(.top)
+                                .padding(.horizontal)
+                            EventTile(date: "24 MAR", title: "Tech Innovation Summit", time: "10:00 AM • Main Auditorium")
+                                .padding(.horizontal)
+                                .padding(.bottom)
+                        }
+                        .background(Color.white)
+                        .cornerRadius(12)
+                        .padding(.horizontal)
+                        
+                   
+                        SectionHeader(title: "Quick Links", action: "", destination: EventsView())
+                            .padding(.horizontal)
+                        
+                        HStack(spacing: 24) {
+                            NavigationLink(destination: EventsView()) {
+                                QuickLink(icon: "plus.circle.fill", label: "Post Event")
+                            }
+                            NavigationLink(destination: RequestMeetingView()) {
+                                QuickLink(icon: "person.2.fill", label: "Meet Lecturer")
+                            }
+                            NavigationLink(destination: ComplaintsView()) {
+                                QuickLink(icon: "lightbulb.fill", label: "Suggestions")
+                            }
+                        }
+                        .padding(.horizontal)
+                        
+                        SectionHeader(title: "Announcements", action: "View all", destination: SpecialAnnouncementsView())
+                            .padding(.horizontal)
+                        
+                        VStack(spacing: 16) {
+                            AnnouncementTile(icon: "megaphone.fill", title: "Library Hours Extended", time: "2 hours ago")
+                        }
+                        .padding(.horizontal)
+                        .padding(.bottom)
+                    }
+                }
+                
+                VStack(spacing: 0) {
+                    Divider()
+                    HStack {
+                        BottomNavItem(icon: "house.fill", label: "Home", isActive: true)
+                        BottomNavItem(icon: "magnifyingglass", label: "Search")
+                        BottomNavItem(icon: "calendar", label: "Events")
+                        BottomNavItem(icon: "person.fill", label: "Profile")
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 8)
+                    .background(.regularMaterial)
+                }
             }
+            .background(Color(.systemGroupedBackground))
         }
-        .background(Color(.systemGroupedBackground))
     }
 }
 
-// MARK: - Components
-
+// MARK: - Supporting Views
 struct SectionHeader: View {
     let title: String
     let action: String
+    let destination: AnyView?
+    
+    init<V: View>(title: String, action: String, destination: V? = nil) {
+        self.title = title
+        self.action = action
+        self.destination = destination != nil ? AnyView(destination) : nil
+    }
     
     var body: some View {
         HStack {
@@ -139,12 +151,16 @@ struct SectionHeader: View {
             
             Spacer()
             
-            if !action.isEmpty {
-                Button(action: {}) {
+            if !action.isEmpty, let destination = destination {
+                NavigationLink(destination: destination) {
                     Text(action)
                         .font(.subheadline.weight(.medium))
                         .foregroundColor(.blue)
                 }
+            } else if !action.isEmpty {
+                Text(action)
+                    .font(.subheadline.weight(.medium))
+                    .foregroundColor(.blue)
             }
         }
     }
@@ -176,7 +192,7 @@ struct FeatureTile: View {
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(title == "Navigator" ? Color.customDarkGreen : Color.green.opacity(0.1))
         )
-        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
+        .shadow(color: .black.opacity(0.05 ), radius: 8, x: 0, y: 4)
     }
 }
 
@@ -222,28 +238,24 @@ struct QuickLink: View {
     let label: String
     
     var body: some View {
-        Button {
-            // Quick link action
-        } label: {
-            VStack(spacing: 8) {
-                Image(systemName: icon)
-                    .foregroundColor(Color.customDarkGreen)
-                
-                Text(label)
-                    .font(.caption)
-                    .foregroundColor(.customDarkGreen)
-                    .multilineTextAlignment(.center)
-                    .fontWeight(.medium)
-            }
-            .frame(width: 105, height: 61)
-            .font(.title3.weight(.semibold))
-            .symbolRenderingMode(.monochrome)
-            .foregroundColor(.green)
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.green.opacity(0.1))
-            )
+        VStack(spacing: 8) {
+            Image(systemName: icon)
+                .foregroundColor(Color.customDarkGreen)
+            
+            Text(label)
+                .font(.caption)
+                .foregroundColor(.customDarkGreen)
+                .multilineTextAlignment(.center)
+                .fontWeight(.medium)
         }
+        .frame(width: 105, height: 61)
+        .font(.title3.weight(.semibold))
+        .symbolRenderingMode(.monochrome)
+        .foregroundColor(.green)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.green.opacity(0.1))
+        )
     }
 }
 
@@ -289,7 +301,6 @@ struct BottomNavItem: View {
     
     var body: some View {
         Button {
-            // Navigation action
         } label: {
             VStack(spacing: 4) {
                 Image(systemName: icon)
@@ -310,3 +321,12 @@ struct DashboardView_Previews: PreviewProvider {
         DashboardView()
     }
 }
+
+struct NavigatorView: View {
+    var body: some View {
+        Text("Navigator View")
+    }
+}
+
+
+
