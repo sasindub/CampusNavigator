@@ -4,53 +4,7 @@ struct DashboardView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                ZStack {
-                    Color.customDarkGreen
-                        .ignoresSafeArea(edges: .top)
-                    HStack {
-                        Image("person.crop.circle")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 40, height: 40)
-                            .clipShape(Circle())
-                            .overlay(Circle().stroke(Color(.systemBackground), lineWidth: 1))
-                        
-                        VStack(alignment: .leading) {
-                            Text("Welcome back,")
-                                .font(.subheadline)
-                                .foregroundColor(.white)
-                            Text("Jone Doe")
-                                .font(.title3.weight(.semibold))
-                                .foregroundColor(.white)
-                        }
-                        
-                        Spacer()
-                        
-                        HStack(spacing: 8) {
-                            Image(systemName: "star.fill")
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(.white, .green)
-                            
-                            Text("78")
-                                .fontWeight(.medium)
-                        }
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                        .background(.green.opacity(0.9))
-                        .clipShape(Capsule())
-                        
-                        Button {
-                        } label: {
-                            Image(systemName: "bell.badge.fill")
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(.red, .white)
-                                .font(.system(size: 20))
-                        }
-                    }
-                    .padding(.bottom, 20)
-                    .padding(.horizontal)
-                }
-                .frame(height: 70)
+                ProfileHeaderView()
                 
                 Spacer()
                 Spacer()
@@ -114,13 +68,13 @@ struct DashboardView: View {
                     Divider()
                     HStack {
                         BottomNavItem(icon: "house.fill", label: "Home", isActive: true)
-                        BottomNavItem(icon: "magnifyingglass", label: "Search")
+                        BottomNavItem(icon: "rectangle.portrait.and.arrow.right", label: "Resources")
                         BottomNavItem(icon: "calendar", label: "Events")
                         BottomNavItem(icon: "person.fill", label: "Profile")
                     }
                     .frame(maxWidth: .infinity)
-                    .padding(.top, 8)
-                    .background(.regularMaterial)
+                    .padding(.top, 15)
+                    .background(.white)
                 }
             }
             .background(Color(.systemGroupedBackground))

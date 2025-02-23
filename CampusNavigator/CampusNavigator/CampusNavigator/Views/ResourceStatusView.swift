@@ -40,10 +40,26 @@ struct ResourceStatusView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
+                    Spacer()
+                    
+                    HStack(spacing: 8) {
+                        Image(systemName: "star.fill")
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(.white, .green)
+                        
+                        Text("78")
+                            .fontWeight(.medium)
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(.green.opacity(0.9))
+                    .clipShape(Capsule())
                     
                     Spacer()
+                    
+                    
                 }
-                .background(Color.green)
+                .background(Color.customDarkGreen)
                 .shadow(radius: 2)
 
                 // Search Bar
@@ -72,25 +88,28 @@ struct ResourceStatusView: View {
                     .padding(.vertical, 10)
                 }
                 
-                // Reward Points Section
-                
-                HStack {
-                    Image(systemName: "bitcoinsign.circle.fill")
-                        .foregroundColor(.yellow)
-                        .font(.largeTitle)
-                    Text("Your Rewards: \(rewardPoints) Points")
-                        .font(.title3)
-                        .foregroundColor(.white)
+                VStack(spacing: 0) {
+                    Divider()
+                    HStack {
+                        BottomNavItem(icon: "house.fill", label: "Home")
+                        BottomNavItem(icon: "magnifyingglass", label: "Search", isActive: true)
+                        BottomNavItem(icon: "calendar", label: "Events")
+                        BottomNavItem(icon: "person.fill", label: "Profile")
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 15)
+                    .background(.white)
                 }
-                .padding()
-                .background(Color.black.opacity(0.6))
-                .cornerRadius(12)
-                .shadow(radius: 5)
-                .padding(.horizontal)
+                
+               
             }
             .navigationBarHidden(true)
+            
+            
         }
         .navigationBarHidden(true)
+        
+        
     }
     
     private func getIndex(for id: UUID) -> Int {
@@ -116,7 +135,7 @@ struct ResourceRow: View {
         HStack(spacing: 16) {
             Image(systemName: resource.icon)
                 .font(.title2)
-                .foregroundColor(.green)
+                .foregroundColor(Color.customDarkGreen)
                 .frame(width: 40)
             
             VStack(alignment: .leading, spacing: 4) {
