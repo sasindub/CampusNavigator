@@ -7,52 +7,60 @@ extension Color {
 struct DashboardView: View {
     var body: some View {
         VStack(spacing: 0) {
+            // Header Area: separated from the scrollable content
+            ZStack {
+                Color.customDarkGreen
+                    .ignoresSafeArea(edges: .top)
+                HStack {
+                    Image("profile")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 40, height: 40)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(Color(.systemBackground), lineWidth: 1))
+                    
+                    VStack(alignment: .leading) {
+                        Text("Welcome back,")
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                        Text("Jone Doe")
+                            .font(.title3.weight(.semibold))
+                            .foregroundColor(.white)
+                    }
+                    
+                    Spacer()
+                    
+                    HStack(spacing: 8) {
+                        Image(systemName: "star.fill")
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(.white, .green)
+                        
+                        Text("78")
+                            .fontWeight(.medium)
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(.green.opacity(0.9))
+                    .clipShape(Capsule())
+                    
+                    Button {
+                        // Notification action
+                    } label: {
+                        Image(systemName: "bell.badge.fill")
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(.red, .white)
+                            .font(.system(size: 20))
+                    }
+                }
+                .padding(.bottom, 20)
+                .padding(.horizontal)
+            }
+            .frame(height: 80) // Fixed header height
+            Spacer()
+            Spacer()
+            // Main Content
             ScrollView {
                 VStack(spacing: 20) {
-                    // Top Profile & Notification Bar
-                    HStack {
-                        Image("profile")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 40, height: 40)
-                            .clipShape(Circle())
-                            .overlay(Circle().stroke(Color(.systemBackground), lineWidth: 1))
-                        
-                        VStack(alignment: .leading) {
-                            Text("Welcome back,")
-                                .font(.subheadline)
-                                .foregroundColor(.white)
-                            Text("Jone Doe")
-                                .font(.title3.weight(.semibold))
-                                .foregroundColor(.white)
-                        }
-                        
-                        Spacer()
-                        
-                        HStack(spacing: 8) {
-                            Image(systemName: "star.fill")
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(.white, .green)
-                            
-                            Text("78")
-                                .fontWeight(.medium)
-                        }
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                        .background(.green.opacity(0.9))
-                        .clipShape(Capsule())
-                        
-                        Button {
-                            // Notification action
-                        } label: {
-                            Image(systemName: "bell.badge.fill")
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(.red, .white)
-                                .font(.system(size: 20))
-                        }
-                    }
-                    .padding()
-                    .background(Color.customDarkGreen)
                     
                     // Feature Tiles
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible())], spacing: 16) {
@@ -73,8 +81,8 @@ struct DashboardView: View {
                             .padding(.horizontal)
                             .padding(.bottom)
                     }
-                    .background(Color.white) // Added white background
-                    .cornerRadius(12) // Ro
+                    .background(Color.white)
+                    .cornerRadius(12)
                     .padding(.horizontal)
                     
                     // Quick Links
@@ -148,8 +156,7 @@ struct FeatureTile: View {
     let icon: String
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8
-        ) {
+        VStack(alignment: .leading, spacing: 8) {
             Image(systemName: icon)
                 .font(.largeTitle.weight(.semibold))
                 .symbolRenderingMode(.multicolor)
@@ -221,7 +228,6 @@ struct QuickLink: View {
             VStack(spacing: 8) {
                 Image(systemName: icon)
                     .foregroundColor(Color.customDarkGreen)
-                    
                 
                 Text(label)
                     .font(.caption)
