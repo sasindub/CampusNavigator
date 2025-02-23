@@ -1,210 +1,301 @@
 import SwiftUI
 
+extension Color {
+    static let customDarkGreen = Color(red: 0/255, green: 55/255, blue: 6/255)
+}
+
 struct DashboardView: View {
-    @State private var showLogoutAlert = false
-    @State private var isLoggedOut = false // State to manage navigation
-    @AppStorage("rewardPoints") private var rewardPoints: Int = 0
-  
-
-    let features = [
-        FeatureItem(title: "Text Navigation", icon: "map", description: "Find your way around campus", color: .green, notifications: 3),
-        FeatureItem(title: "Resource Status", icon: "chart.bar", description: "Check real-time availability", color: .green, notifications: 1),
-        FeatureItem(title: "Campus Events", icon: "calendar", description: "View & post activities", color: .green, notifications: 5),
-        FeatureItem(title: "Meet Lecturers", icon: "person.fill", description: "Request a meeting", color: .green, notifications: 0),
-        FeatureItem(title: "Announcements", icon: "megaphone", description: "Important updates", color: .green, notifications: 2),
-        FeatureItem(title: "Feedback", icon: "text.bubble", description: "Submit suggestions", color: .green, notifications: 4)
-    ]
-    
     var body: some View {
-        NavigationView {
-            ZStack {
-                // Gradient Background
-                LinearGradient(gradient: Gradient(colors: [Color.green.opacity(0.3), Color.white]), startPoint: .top, endPoint: .bottom)
-                    .edgesIgnoringSafeArea(.all)
-                
-                VStack(spacing: 0) {
-                    // Header
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(spacing: 20) {
+                    // Top Profile & Notification Bar
                     HStack {
-                        Spacer() // This spacer pushes the title to the center
-
-                        Text("Campus Navigator")
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-
-                        Spacer() // This spacer helps in centering the title
-                    }
-                    .padding(.vertical)
-                    .background(Color.green)
-                    .shadow(radius: 2)
-                    
-                    // Add margin between header and welcome message
-                    Spacer(minLength: 40) // Adjust the value as needed
-                    
-                    // Welcome Message with Logout Button
-                    HStack {
-                        Button(action: {
-                            showLogoutAlert = true // Show the logout confirmation alert
-                        }) {
-                            HStack {
-                                Image(systemName: "arrow.right.square") // Logout icon
-                                    .foregroundColor(.white)
-                                Text("Logout")
-                                    .font(.headline)
-                                    .foregroundColor(.white)
-                            }
-                            .padding(8)
-                            .background(Color.green)
-                            .cornerRadius(8)
+                        Image("profile")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 40, height: 40)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color(.systemBackground), lineWidth: 1))
+                        
+                        VStack(alignment: .leading) {
+                            Text("Welcome back,")
+                                .font(.subheadline)
+                                .foregroundColor(.white)
+                            Text("Jone Doe")
+                                .font(.title3.weight(.semibold))
+                                .foregroundColor(.white)
                         }
-                        .padding(.trailing) 
                         
                         Spacer()
                         
-                        Image(systemName: "person.fill")
-                            .font(.title2)
-                            .foregroundColor(.green)
-                        Text("Welcome, Joe Doi!")
-                            .font(.headline)
-                            .foregroundColor(.primary)
-                    }
-                    .padding(.horizontal)
-                    .padding(.bottom, 10)
-                    
-                    Spacer(minLength: 30)
-                    
-                    // Feature Grid
-                    ScrollView {
-                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                            ForEach(features) { feature in
-                                NavigationLink(destination: destinationView(for: feature.title)) {
-                                    FeatureTile(feature: feature)
-                                    
-                                }
-                            }
+                        HStack(spacing: 8) {
+                            Image(systemName: "star.fill")
+                                .symbolRenderingMode(.palette)
+                                .foregroundStyle(.white, .green)
+                            
+                            Text("78")
+                                .fontWeight(.medium)
                         }
-                        .padding(.horizontal) // Add horizontal padding for safe area
-                        .padding(.top, 10)
-                    }
-                    
-                    // Reward Points Section
-                    
-                    HStack {
-                        Image(systemName: "bitcoinsign.circle.fill")
-                            .foregroundColor(.yellow)
-                            .font(.largeTitle)
-                        Text("Your Rewards: \(rewardPoints) Points")
-                            .font(.title3)
-                            .foregroundColor(.white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(.green.opacity(0.9))
+                        .clipShape(Capsule())
+                        
+                        Button {
+                            // Notification action
+                        } label: {
+                            Image(systemName: "bell.badge.fill")
+                                .symbolRenderingMode(.palette)
+                                .foregroundStyle(.red, .white)
+                                .font(.system(size: 20))
+                        }
                     }
                     .padding()
-                    .background(Color.black.opacity(0.6))
-                    .cornerRadius(12)
-                    .shadow(radius: 5)
+                    .background(Color.customDarkGreen)
+                    
+                    // Feature Tiles
+                    LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible())], spacing: 16) {
+                        FeatureTile(title: "Navigator", subtitle: "Find your way", icon: "map.fill")
+                        FeatureTile(title: "Resources", subtitle: "Check availability", icon: "rectangle.portrait.and.arrow.right")
+                    }
                     .padding(.horizontal)
+                    
+                    // Upcoming Events
+                    SectionHeader(title: "Upcoming Events", action: "See all")
+                        .padding(.horizontal)
+                    
+                    VStack(spacing: 16) {
+                        EventTile(date: "24 MAR", title: "Tech Innovation Summit", time: "10:00 AM • Main Auditorium")
+                            .padding(.top)
+                            .padding(.horizontal)
+                        EventTile(date: "24 MAR", title: "Tech Innovation Summit", time: "10:00 AM • Main Auditorium")
+                            .padding(.horizontal)
+                            .padding(.bottom)
+                    }
+                    .background(Color.white) // Added white background
+                    .cornerRadius(12) // Ro
+                    .padding(.horizontal)
+                    
+                    // Quick Links
+                    SectionHeader(title: "Quick Links", action: "")
+                        .padding(.horizontal)
+                    
+                    HStack(spacing: 24) {
+                        QuickLink(icon: "plus.circle.fill", label: "Post Event")
+                        QuickLink(icon: "person.2.fill", label: "Meet Lecturer")
+                        QuickLink(icon: "lightbulb.fill", label: "Suggestions")
+                    }
+                    .padding(.horizontal)
+                    
+                    // Announcements
+                    SectionHeader(title: "Announcements", action: "View all")
+                        .padding(.horizontal)
+                    
+                    VStack(spacing: 16) {
+                        AnnouncementTile(icon: "megaphone.fill", title: "Library Hours Extended", time: "2 hours ago")
+                    }
+                    .padding(.horizontal)
+                    .padding(.bottom)
+                }
+            }
+            
+            // Bottom Navigation Bar
+            VStack(spacing: 0) {
+                Divider()
+                HStack {
+                    BottomNavItem(icon: "house.fill", label: "Home", isActive: true)
+                    BottomNavItem(icon: "magnifyingglass", label: "Search")
+                    BottomNavItem(icon: "calendar", label: "Events")
+                    BottomNavItem(icon: "person.fill", label: "Profile")
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.top, 8)
+                .background(.regularMaterial)
+            }
+        }
+        .background(Color(.systemGroupedBackground))
+    }
+}
 
+// MARK: - Components
+
+struct SectionHeader: View {
+    let title: String
+    let action: String
+    
+    var body: some View {
+        HStack {
+            Text(title)
+                .font(.headline.weight(.semibold))
+            
+            Spacer()
+            
+            if !action.isEmpty {
+                Button(action: {}) {
+                    Text(action)
+                        .font(.subheadline.weight(.medium))
+                        .foregroundColor(.blue)
                 }
-                
             }
-            .navigationBarHidden(true)
-            .alert(isPresented: $showLogoutAlert) {
-                Alert(
-                    title: Text("Logout"),
-                    message: Text("Are you sure you want to logout?"),
-                    primaryButton: .destructive(Text("Yes")) {
-                        isLoggedOut = true // Set the state to indicate logout
-                    },
-                    secondaryButton: .cancel()
-                )
+        }
+    }
+}
+
+struct FeatureTile: View {
+    let title: String
+    let subtitle: String
+    let icon: String
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8
+        ) {
+            Image(systemName: icon)
+                .font(.largeTitle.weight(.semibold))
+                .symbolRenderingMode(.multicolor)
+                .foregroundColor(title == "Navigator" ? .white : .customDarkGreen)
+            
+            Text(title)
+                .font(.headline.weight(.semibold))
+                .foregroundColor(title == "Navigator" ? .white : .customDarkGreen)
+            
+            Text(subtitle)
+                .font(.subheadline)
+                .foregroundColor(title == "Navigator" ? .white.opacity(0.8) : .customDarkGreen)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(title == "Navigator" ? Color.customDarkGreen : Color.green.opacity(0.1))
+        )
+        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
+    }
+}
+
+struct EventTile: View {
+    let date: String
+    let title: String
+    let time: String
+    
+    var body: some View {
+        HStack(spacing: 16) {
+            VStack {
+                Text(date)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundColor(Color.customDarkGreen)
             }
+            .padding(10)
+            .frame(width: 60)
             .background(
-                NavigationLink(destination: LoginView().navigationBarBackButtonHidden(true), isActive: $isLoggedOut) {
-                    EmptyView()
-                }
+                RoundedRectangle(cornerRadius: 12)
+                    .strokeBorder(Color.customDarkGreen, lineWidth: 1)
+            )
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.subheadline.weight(.medium))
+                    .foregroundColor(Color.customDarkGreen)
+                
+                Text(time)
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+            
+            Image(systemName: "chevron.right")
+                .foregroundColor(.secondary)
+        }
+    }
+}
+
+struct QuickLink: View {
+    let icon: String
+    let label: String
+    
+    var body: some View {
+        Button {
+            // Quick link action
+        } label: {
+            VStack(spacing: 8) {
+                Image(systemName: icon)
+                    .foregroundColor(Color.customDarkGreen)
+                    
+                
+                Text(label)
+                    .font(.caption)
+                    .foregroundColor(.customDarkGreen)
+                    .multilineTextAlignment(.center)
+                    .fontWeight(.medium)
+            }
+            .frame(width: 105, height: 61)
+            .font(.title3.weight(.semibold))
+            .symbolRenderingMode(.monochrome)
+            .foregroundColor(.green)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.green.opacity(0.1))
             )
         }
     }
 }
 
-
-// The rest of your code remains unchanged...
-
-struct FeatureItem: Identifiable {
-    let id = UUID()
-    let title: String
+struct AnnouncementTile: View {
     let icon: String
-    let description: String
-    let color: Color
-    let notifications: Int // Add notifications property
-}
-
-struct FeatureTile: View {
-    let feature: FeatureItem
+    let title: String
+    let time: String
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Image(systemName: feature.icon)
-                    .font(.title2)
-                    .foregroundColor(feature.color)
-                Spacer()
+        HStack(spacing: 16) {
+            Image(systemName: icon)
+                .font(.title3)
+                .symbolRenderingMode(.multicolor)
+                .frame(width: 40)
+                .foregroundColor(.orange)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.subheadline.weight(.medium))
+                    .foregroundColor(.orange)
                 
-                // Notification Label
-                if feature.notifications > 0 {
-                    HStack {
-                        Image(systemName: "bell.fill")
-                            .foregroundColor(.white)
-                        Text("\(feature.notifications)")
-                    }
-                    .background(Color.red)
-                    .font(.caption)
-                    .foregroundColor(.white)
-                    .padding(4)
-                    .background(Color.red)
-                    .cornerRadius(8)
-                }
+                Text(time)
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
             }
             
-            Text(feature.title)
-                .font(.headline)
-                .foregroundColor(.primary)
-            
-            Text(feature.description)
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-                .lineLimit(2)
+            Spacer()
         }
         .padding()
-        .background(Color.white)
-        .cornerRadius(12)
-        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+        .background(Color(.secondarySystemGroupedBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(Color.orange, lineWidth: 1)
+        )
     }
 }
 
-@ViewBuilder
-
-private func destinationView(for title: String) -> some View {        switch title {
-       case "Resource Status":
-           ResourceStatusView()        case "Campus Events":
-           EventsView()        case "Meet Lecturers":            RequestMeetingView()        case "Announcements":            SpecialAnnouncementsView()        case "Feedback":            ComplaintsView()        default:
-           EmptyView()        }
-   }
-
-// Dummy detail view for navigation
-struct FeatureDetailView: View {
-    let feature: FeatureItem
+struct BottomNavItem: View {
+    let icon: String
+    let label: String
+    var isActive: Bool = false
     
     var body: some View {
-        VStack {
-            Text(feature.title)
-                .font(.largeTitle)
-                .padding()
-            Text(feature.description)
-                .font(.body)
-                .padding()
-            Spacer()
+        Button {
+            // Navigation action
+        } label: {
+            VStack(spacing: 4) {
+                Image(systemName: icon)
+                    .symbolVariant(isActive ? .fill : .none)
+                    .font(.system(size: 20))
+                
+                Text(label)
+                    .font(.caption2)
+            }
+            .foregroundColor(isActive ? .blue : .secondary)
+            .frame(maxWidth: .infinity)
         }
-        .navigationTitle(feature.title)
     }
 }
 

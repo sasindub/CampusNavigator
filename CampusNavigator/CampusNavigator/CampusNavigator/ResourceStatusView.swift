@@ -220,7 +220,7 @@ struct ResourceDetailView: View {
             
             Spacer()
         }
-        .navigationTitle(resource.title)
+        .navigationTitle("Resource Status")
         .onAppear { previousStatus = resource.status }
     }
 }
