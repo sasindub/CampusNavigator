@@ -131,63 +131,6 @@ struct DashboardView: View {
 // MARK: - Supporting Views
 
 
-struct AnnouncementTile: View {
-    let icon: String
-    let title: String
-    let time: String
-    
-    var body: some View {
-        HStack(spacing: 16) {
-            Image(systemName: icon)
-                .font(.title3)
-                .symbolRenderingMode(.multicolor)
-                .frame(width: 40)
-                .foregroundColor(.orange)
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .font(.subheadline.weight(.medium))
-                    .foregroundColor(.orange)
-                
-                Text(time)
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
-            }
-            
-            Spacer()
-        }
-        .padding()
-        .background(Color(.secondarySystemGroupedBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(Color.orange, lineWidth: 1)
-        )
-    }
-}
-
-struct BottomNavItem: View {
-    let icon: String
-    let label: String
-    var isActive: Bool = false
-    
-    var body: some View {
-        Button {
-        } label: {
-            VStack(spacing: 4) {
-                Image(systemName: icon)
-                    .symbolVariant(isActive ? .fill : .none)
-                    .font(.system(size: 20))
-                
-                Text(label)
-                    .font(.caption2)
-            }
-            .foregroundColor(isActive ? .blue : .secondary)
-            .frame(maxWidth: .infinity)
-        }
-    }
-}
-
 struct DashboardView_Previews: PreviewProvider {
     static var previews: some View {
         DashboardView()
