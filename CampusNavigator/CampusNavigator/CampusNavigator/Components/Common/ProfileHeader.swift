@@ -36,6 +36,7 @@ struct ProfileHeaderView: View {
                     
                     Text("\(rewardPoints)")
                         .fontWeight(.medium)
+                        .foregroundColor(.white)
                 }
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)

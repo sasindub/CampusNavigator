@@ -25,49 +25,81 @@ struct ResourceStatusView: View {
     var body: some View {
         NavigationView {
             VStack {
+                
+              //header
+                
+                
                 // Header
-                HStack {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss() 
-                    }) {
-                        Image(systemName: "chevron.left")
-                            .font(.title)
+                VStack(spacing: 0) {
+                    // Title Bar
+                    HStack(alignment: .center) {
+                        Text("Resource Status")
+                            .font(.title2)
+                            .fontWeight(.semibold)
                             .foregroundColor(.white)
-                    }
-                    .padding()
-                    
-                    Text("Resource Status")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                    Spacer()
-                    
-                    HStack(spacing: 8) {
-                        Image(systemName: "star.fill")
-                            .symbolRenderingMode(.palette)
-                            .foregroundStyle(.white, .green)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading)
                         
-                        Text("78")
-                            .fontWeight(.medium)
+                        HStack(spacing: 6) {
+                            Image(systemName: "star.fill")
+                                .symbolRenderingMode(.palette)
+                                .foregroundStyle(.white, .green)
+                            
+                            Text("\(rewardPoints)")
+                                .fontWeight(.medium)
+                                .foregroundColor(.white)
+                            
+                            
+                            
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(.green.opacity(0.9))
+                        .clipShape(Capsule())
+                        .padding(.trailing)
+                        
+                        Button {
+                            // Notification action
+                        } label: {
+                            Image(systemName: "bell.badge.fill")
+                                .symbolRenderingMode(.palette)
+                                .foregroundStyle(.red, .white)
+                                .font(.system(size: 20))
+                        }
+                        .padding([.trailing, .vertical])
+                        .padding(.leading, -10)
+                        
+                        
+                        
                     }
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(.green.opacity(0.9))
-                    .clipShape(Capsule())
-                    
-                    Spacer()
+                    .frame(height: 44)
+                    .padding(.top, 1)
+                    .padding(.bottom)
                     
                     
+
+                    
+                    // Search Bar
+                    HStack {
+                        HStack {
+                            Image(systemName: "magnifyingglass")
+                                .foregroundColor(.gray)
+                                .padding(.leading, 8)
+                            
+                            TextField("Search", text: $searchText)
+                                .padding(.vertical, 8)
+                                .padding(.trailing, 8)
+                        }
+                        .background(Color(.systemGray6))
+                        .cornerRadius(10)
+                    }
+                    .padding(.horizontal)
+                    .padding(.bottom)
                 }
                 .background(Color.customDarkGreen)
-                .shadow(radius: 2)
+              
 
-                // Search Bar
-                TextField("Search...", text: $searchText)
-                    .padding(10)
-                    .background(Color(.systemGray6))
-                    .cornerRadius(8)
-                    .padding(.horizontal)
+               
 
                 // Resources List
                 ScrollView {
