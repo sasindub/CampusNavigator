@@ -8,15 +8,13 @@ struct BottomNavBar: View {
             Divider()
             HStack {
                 BottomNavItem(icon: "house.fill", label: "Home", isActive: selectedTab == "home")
-                BottomNavItem(icon: "magnifyingglass", label: "Search", isActive: selectedTab == "search")
-                BottomNavItem(icon: "calendar", label: "Events", isActive: selectedTab == "events")
-                BottomNavItem(icon: "person.fill", label: "Profile", isActive: selectedTab == "profile")
+                BottomNavItem(icon: "rectangle.portrait.and.arrow.right.fill", label: "status", isActive: selectedTab == "status")
+                BottomNavItem(icon: "map.fill", label: "navigator", isActive: selectedTab == "navigator")
+                BottomNavItem(icon: "person.2.fill", label: "meets", isActive: selectedTab == "meets")
             }
             .frame(maxWidth: .infinity)
             .padding(.top, 15)
-            .padding(.bottom, 15)
-            .background(Color.white)
-            .shadow(radius: 2)
+            .background(.white)
         }
     }
 }

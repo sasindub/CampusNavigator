@@ -7,7 +7,7 @@ struct ResourceRow: View {
         HStack(spacing: 16) {
             Image(systemName: resource.icon)
                 .font(.title2)
-                .foregroundColor(.accentColor)
+                .foregroundColor(.customDarkGreen)
                 .frame(width: 40, height: 40)
                 .background(Color(.systemGray5))
                 .clipShape(RoundedRectangle(cornerRadius: 8))

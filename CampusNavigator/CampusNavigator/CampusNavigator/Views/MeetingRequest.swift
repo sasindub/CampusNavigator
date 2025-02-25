@@ -63,7 +63,7 @@ struct RequestMeetingView: View {
                     
                     Spacer()
                     
-                    BottomNavBar(selectedTab: "search")
+                    BottomNavBar(selectedTab: "meets")
                 }
                 
                 // Floating Add Button

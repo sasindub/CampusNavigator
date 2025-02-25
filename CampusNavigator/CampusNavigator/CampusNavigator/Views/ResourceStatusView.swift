@@ -42,18 +42,7 @@ struct ResourceStatusView: View {
             }
             
             // Bottom navigation
-            VStack(spacing: 0) {
-                Divider()
-                HStack {
-                    BottomNavItem(icon: "house.fill", label: "Home")
-                    BottomNavItem(icon: "magnifyingglass", label: "Search", isActive: true)
-                    BottomNavItem(icon: "calendar", label: "Events")
-                    BottomNavItem(icon: "person.fill", label: "Profile")
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.top, 15)
-                .background(.white)
-            }
+            BottomNavBar(selectedTab: "status")
         }
         .background(Color(.systemGroupedBackground))
         .navigationBarTitleDisplayMode(.inline)

@@ -70,18 +70,8 @@ struct DashboardView: View {
                     }
                 }
                 
-                VStack(spacing: 0) {
-                    Divider()
-                    HStack {
-                        BottomNavItem(icon: "house.fill", label: "Home", isActive: true)
-                        BottomNavItem(icon: "rectangle.portrait.and.arrow.right", label: "Resources")
-                        BottomNavItem(icon: "calendar", label: "Events")
-                        BottomNavItem(icon: "person.fill", label: "Profile")
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, 15)
-                    .background(.white)
-                }
+                // Bottom navigation
+                BottomNavBar(selectedTab: "home")
             }
             .background(Color(.systemGroupedBackground))
         }
