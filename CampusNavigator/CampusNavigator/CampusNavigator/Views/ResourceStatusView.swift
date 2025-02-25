@@ -20,6 +20,7 @@ struct ResourceStatusView: View {
         VStack {
             // Search and points header
             CommonHeader(rewardPoints: $rewardPoints, searchText: $searchText, title: $title)
+                .padding(.top, -10)
             
             // Resources List
             ScrollView {
