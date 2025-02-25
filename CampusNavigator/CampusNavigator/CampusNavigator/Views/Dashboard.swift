@@ -20,9 +20,11 @@ struct DashboardView: View {
                             }
                         }
                         .padding(.horizontal)
+                        .padding(.bottom, -20)
                         
                         SectionHeader(title: "Upcoming Events", action: "See all", destination: EventsView())
                             .padding(.horizontal)
+                            .padding(.bottom, -20)
                         
                         VStack(spacing: 16) {
                             EventTile(date: "24 MAR", title: "Tech Innovation Summit", time: "10:00 AM • Main Auditorium")
@@ -35,10 +37,12 @@ struct DashboardView: View {
                         .background(Color.white)
                         .cornerRadius(12)
                         .padding(.horizontal)
+                        .padding(.bottom, -20)
                         
                    
                         SectionHeader(title: "Quick Links", action: "", destination: EventsView())
                             .padding(.horizontal)
+                            .padding(.bottom, -20)
                         
                         HStack(spacing: 24) {
                             NavigationLink(destination: EventsView()) {
@@ -52,14 +56,16 @@ struct DashboardView: View {
                             }
                         }
                         .padding(.horizontal)
+                        .padding(.bottom, -20)
                         
                         SectionHeader(title: "Announcements", action: "View all", destination: SpecialAnnouncementsView())
                             .padding(.horizontal)
+                            .padding(.bottom, -20)
                         
                         VStack(spacing: 16) {
                             AnnouncementTile(icon: "megaphone.fill", title: "Library Hours Extended", time: "2 hours ago")
                         }
-                        .padding(.horizontal)
+                        .padding(.horizontal,23)
                         .padding(.bottom)
                     }
                 }

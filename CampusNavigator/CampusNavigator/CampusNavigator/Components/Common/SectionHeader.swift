@@ -30,5 +30,8 @@ struct SectionHeader: View {
                     .foregroundColor(.blue)
             }
         }
+        .padding() // Add some padding for better appearance
     }
 }
+
+
