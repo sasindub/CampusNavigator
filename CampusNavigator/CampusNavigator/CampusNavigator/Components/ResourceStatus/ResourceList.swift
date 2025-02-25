@@ -64,3 +64,9 @@ struct ResourceRow: View {
         }
     }
 }
+
+struct ResourceRow_Previews: PreviewProvider {
+    static var previews: some View {
+        ResourceStatusView()
+    }
+}

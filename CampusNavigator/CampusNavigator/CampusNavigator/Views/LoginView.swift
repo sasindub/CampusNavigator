@@ -7,6 +7,7 @@ struct LoginView: View {
     @State var showErr = false
     @State var loading = false
     @State var fieldFocus: Int? = 0
+    @AppStorage("rewardPoints") private var rewardPoints = 0
     
     var body: some View {
         NavigationStack {

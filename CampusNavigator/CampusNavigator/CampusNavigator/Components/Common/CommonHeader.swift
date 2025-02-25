@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ResourceStatusHeader: View {
+struct CommonHeader: View {
     @Binding var rewardPoints: Int
     @Binding var searchText: String
     @Binding var title: String
