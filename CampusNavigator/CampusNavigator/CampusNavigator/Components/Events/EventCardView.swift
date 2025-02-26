@@ -12,15 +12,25 @@ struct EventCard: View {
                 .frame(height: 180)
                 .clipped()
             
-         
             VStack(alignment: .leading, spacing: 8) {
                 Text(event.title)
                     .font(.headline)
                     .foregroundColor(.black)
                 
-                Text("\(event.members) (\(event.spotsLeft))")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
+                HStack {
+                    Image(systemName: "location.fill")
+                        .foregroundColor(.gray)
+                    Text(event.location)
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                        .fontWeight(.medium)
+                }
+                
+                Text(event.description)
+                    .foregroundColor(.black.opacity(0.7))
+                    .lineLimit(2)
+                    .truncationMode(.tail)
+                    .font(.callout)
                 
                 HStack {
                     Text("\(event.date) - \(event.time)")
@@ -43,9 +53,6 @@ struct EventCard: View {
         .padding(.horizontal)
     }
 }
-
-
-
 
 struct EventView_Previews: PreviewProvider {
     static var previews: some View {

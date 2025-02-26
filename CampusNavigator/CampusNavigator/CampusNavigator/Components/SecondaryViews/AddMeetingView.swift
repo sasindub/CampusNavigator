@@ -14,7 +14,7 @@ struct AddMeetingView: View {
         VStack {
             Form {
                 Section(header: Text("Meeting Details")) {
-                    DatePicker("Date & Time", selection: $date, displayedComponents: [.date, .hourAndMinute])
+                
                     
                     HStack {
                         Text("Lecturer")

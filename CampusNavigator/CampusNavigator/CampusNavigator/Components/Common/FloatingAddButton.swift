@@ -19,8 +19,12 @@ struct FloatingAddButton: View {
                         .foregroundColor(.white)
                         .clipShape(Circle())
                         .shadow(radius: 5)
+                        .overlay(
+                            Circle()
+                                .stroke(Color.white, lineWidth: 2) 
+                        )
                 }
-                .padding(.bottom, 100) 
+                .padding(.bottom, 100)
                 .padding(.trailing, 23)
                 .accessibilityLabel("Add New Item")
             }
