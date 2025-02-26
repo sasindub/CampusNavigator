@@ -78,7 +78,7 @@ struct DashboardView: View {
     }
 }
 
-// MARK: - Supporting Views
+
 
 
 struct DashboardView_Previews: PreviewProvider {
@@ -87,11 +87,7 @@ struct DashboardView_Previews: PreviewProvider {
     }
 }
 
-struct NavigatorView: View {
-    var body: some View {
-        Text("Navigator View")
-    }
-}
+
 
 
 

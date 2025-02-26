@@ -10,10 +10,10 @@ struct ProfileHeaderView: View {
                 .ignoresSafeArea(edges: .top)
             
             HStack {
-                Image(systemName: "person.crop.circle")
+                Image("pro")
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 40, height: 40)
+                    .frame(width: 50, height: 50)
                     .clipShape(Circle())
                     .overlay(Circle().stroke(Color(.systemBackground), lineWidth: 1))
                     .foregroundColor(.white)
