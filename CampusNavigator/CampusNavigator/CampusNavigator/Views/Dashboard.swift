@@ -6,6 +6,7 @@ struct DashboardView: View {
             VStack(spacing: 0) {
                 ProfileHeaderView()
                 
+                
                 Spacer()
                 Spacer()
                 
@@ -75,6 +76,8 @@ struct DashboardView: View {
             }
             .background(Color(.systemGroupedBackground))
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
     }
 }
 

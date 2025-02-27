@@ -1,116 +1,118 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State var email: String = ""
-    @State var pass: String = ""
-    @State var loggedIn = false
-    @State var showErr = false
-    @State var loading = false
-    @State var fieldFocus: Int? = 0
-    
-    
+    @State private var email: String = ""
+    @State private var password: String = ""
+    @State private var showError: Bool = false
+    @State private var errorMessage: String = ""
+    @State private var isLoggedIn: Bool = false
+
+    let validEmail = "student@nibm.lk"
+    let validPassword = "password123"
+
     var body: some View {
-        NavigationStack {
+        NavigationView {
             ZStack {
-                // Green gradient background
-                LinearGradient(gradient: Gradient(colors: [
-                    Color.green.opacity(0.3),
-                    Color.green.opacity(0.1),
-                    Color.white
-                ]), startPoint: .top, endPoint: .bottom)
-                .edgesIgnoringSafeArea(.all)
-                
+                LinearGradient(gradient: Gradient(colors: [Color.green.opacity(0.7), Color.white]),
+                               startPoint: .top,
+                               endPoint: .bottom)
+                    .edgesIgnoringSafeArea(.all)
+
                 VStack {
-                    // Logo
-                    VStack {
-                        Image(systemName: "map.circle.fill")
-                            .resizable()
-                            .frame(width: 80, height: 80)
-                            .foregroundColor(.green)
-                            .background(Circle().fill(Color(.systemGray6)).frame(width: 120, height: 120))
-                            .padding(.bottom, 10)
-                        
-                        Text("Campus Navigator")
-                            .font(.title)
-                            .bold()
-                            .foregroundColor(.green)
-                    }
-                    .padding(.top, 60)
-                    .padding(.bottom, 40)
-                    
-                    // Fields
-                    VStack(spacing: 15) {
+                    Image("logo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 120, height: 120)
+                        .padding(.top, 50)
+
+                    Text("Campus Navigator")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .padding(.top, 10)
+                        .padding(.bottom, 30)
+                        .foregroundColor(.customDarkGreen)
+
+                    VStack(spacing: 10) {
                         HStack {
-                            Image(systemName: "envelope").foregroundColor(.green)
+                            Image(systemName: "envelope.fill")
+                                .foregroundColor(.gray)
+                                .padding(.leading,1)
                             TextField("Email", text: $email)
                                 .keyboardType(.emailAddress)
-                                .textContentType(.emailAddress)
+                                .autocapitalization(.none)
                         }
-                        .padding(12)
-                        .background(Color(.systemGray6))
-                        .cornerRadius(10)
-                        
+                        .padding(.horizontal, 15)
+                        .frame(height: 45)
+                        .background(Color.white)
+                        .cornerRadius(8)
+             
+                        .padding(.horizontal)
+                      
+
                         HStack {
-                            Image(systemName: "lock").foregroundColor(.green)
-                            SecureField("Password", text: $pass)
+                            Image(systemName: "lock.fill")
+                                .foregroundColor(.gray)
+                                .padding(.leading, 1)
+                            SecureField("Password", text: $password)
                         }
-                        .padding(12)
-                        .background(Color(.systemGray6))
-                        .cornerRadius(10)
-                    }
-                    .padding(.horizontal, 20)
-                    
-                    // Login Button (now matching text field width)
-                    Button(action: {
-                        loading = true
-                        showErr = false
+                        .padding(.horizontal, 15)
+                        .frame(height: 45)
+                        .background(Color.white)
+                        .cornerRadius(8)
                         
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            loading = false
-                            if email == "u" && pass == "1" {
-                                loggedIn = true
-                            } else {
-                                showErr = true
-                            }
-                        }
+                        .padding(.horizontal)
+                    }
+
+                    Button(action: {
+                        validateLogin()
                     }) {
-                        if loading {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 50)
-                        } else {
-                            Text("Login")
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 50)
-                        }
+                        Text("Login")
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 45)
+                            .background(Color.customDarkGreen)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                            .font(.title3)
                     }
-                    .background(Color.green)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                    .padding(.horizontal, 20) // Match text field padding
-                    .padding(.top, 20)
-                    
-                    if showErr {
-                        Text("Incorrect email or password")
+                    .padding(.horizontal)
+                    .padding(.top, 10)
+
+                    if showError {
+                        Text(errorMessage)
                             .foregroundColor(.red)
-                            .padding(.top, 10)
+                            .font(.footnote)
+                            .padding(.top, 5)
                     }
-                    
+
                     Spacer()
-                    
-                    Button("Forgot password? Contact admin") {
-                        // TODO: Implement contact
+
+                    Text("Forgot password? Contact Admin")
+                        .font(.footnote)
+                        .foregroundColor(.gray)
+
+                    Text("admin@nibm.lk")
+                        .font(.footnote)
+                        .foregroundColor(.gray)
+
+                   
+                    NavigationLink(destination: DashboardView(), isActive: $isLoggedIn) {
+                       
                     }
-                    .foregroundColor(.gray)
-                    .font(.caption)
-                    .padding(.bottom, 20)
                 }
             }
-            .navigationDestination(isPresented: $loggedIn) {
-                DashboardView()
-                    .navigationBarBackButtonHidden(true)
-            }
+            
+        }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
+    }
+
+    func validateLogin() {
+        if email == validEmail && password == validPassword {
+            showError = false
+            isLoggedIn = true
+        } else {
+            showError = true
+            errorMessage = "Invalid email or password. Try again."
         }
     }
 }
