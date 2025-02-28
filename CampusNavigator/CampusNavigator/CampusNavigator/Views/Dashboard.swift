@@ -75,11 +75,13 @@ struct DashboardView: View {
                 BottomNavBar(selectedTab: "home")
             }
             .background(Color(.systemGroupedBackground))
+            .navigationBarHidden(true)
         }
-        .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
     }
+    
 }
+
 
 
 

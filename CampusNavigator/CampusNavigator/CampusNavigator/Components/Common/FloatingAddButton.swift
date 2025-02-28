@@ -21,7 +21,7 @@ struct FloatingAddButton: View {
                         .shadow(radius: 5)
                         .overlay(
                             Circle()
-                                .stroke(Color.white, lineWidth: 2) 
+                                .stroke(Color.white, lineWidth: 2)
                         )
                 }
                 .padding(.bottom, 100)

@@ -59,3 +59,9 @@ struct ProfileHeaderView: View {
     }
 }
 
+
+struct DashboardViews_Previews: PreviewProvider {
+    static var previews: some View {
+        DashboardView()
+    }
+}

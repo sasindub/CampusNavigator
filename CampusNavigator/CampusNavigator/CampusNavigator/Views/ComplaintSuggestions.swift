@@ -87,7 +87,7 @@ struct ComplaintsView: View {
             }
             .background(Color(.systemGroupedBackground))
         }
-        .navigationBarHidden(true)
+   
         
     }
 }

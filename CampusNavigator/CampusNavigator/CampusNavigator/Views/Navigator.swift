@@ -69,7 +69,7 @@ struct NavigatorView: View {
                                 .bold()
                         }
                         .padding()
-                        .background(Color.green)
+                        .background(Color.customDarkGreen)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                         .shadow(radius: 5)
                     }

@@ -40,13 +40,19 @@ struct LoginView: View {
                             TextField("Email", text: $email)
                                 .keyboardType(.emailAddress)
                                 .autocapitalization(.none)
+                                
+                                
                         }
                         .padding(.horizontal, 15)
                         .frame(height: 45)
                         .background(Color.white)
                         .cornerRadius(8)
-             
+                        .overlay(
+                                   RoundedRectangle(cornerRadius: 10)
+                                       .stroke(Color.green.opacity(0.8), lineWidth: 1)
+                               )
                         .padding(.horizontal)
+                        .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
                       
 
                         HStack {
@@ -59,8 +65,12 @@ struct LoginView: View {
                         .frame(height: 45)
                         .background(Color.white)
                         .cornerRadius(8)
-                        
+                        .overlay(
+                                   RoundedRectangle(cornerRadius: 10)
+                                       .stroke(Color.green.opacity(0.8), lineWidth: 1)
+                               )
                         .padding(.horizontal)
+                        .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
                     }
 
                     Button(action: {
